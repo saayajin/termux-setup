@@ -12,15 +12,11 @@ chsh -s bash && bash <(curl https://raw.githubusercontent.com/saayajin/termux-se
 
 the following folders/files will be lost:
 
-- ~/.config/rclone/rclone.conf
 - ~/.motd/
 - ~/.oh-my-zsh/
-- ~/.shortcuts/icons/
 - ~/.shortcuts/clipboard
 - ~/.termux-setup/
 - ~/.termux/colors.properties
 - ~/.termux/font.ttf
-- ~/.vimrc
 - ~/.zshrc
-- ~/bin/termux-file-editor
 - ~/bin/termux-url-opener
