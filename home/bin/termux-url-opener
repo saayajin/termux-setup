@@ -1,0 +1,280 @@
+#!/bin/zsh
+clear
+
+#variables
+target=$1
+
+#colors
+DG='\e[1;30m' # dark grey
+LR='\e[1;31m' # light red
+LG='\e[1;32m' # light green
+LY='\e[1;33m' # light yellow
+LB='\e[1;34m' # light blue
+W='\e[1;37m'  # white
+R='\e[0m'     # reset color / no color
+
+echo "${DG}Analysing URL..."
+echo "[${LB}$target${DG}]"
+echo ""
+echo "${LG}What should i do?"
+echo ""
+echo "${LY}v${W}) Download video"
+echo "${LY}f${W}) Download video (Select format)"
+echo "${LY}m${W}) Download music"
+echo "${LY}s${W}) Download with spotdl"
+echo "${LY}k${W}) Download with gallery-dl"
+echo "${LY}i${W}) Download with gallery-dl (images only)"
+echo "${LY}w${W}) Download with wget"
+echo "${LY}a${W}) Download with aria2"
+echo "${LY}t${W}) Download with tdl"
+echo "${LY}n${W}) Download with megatools"
+echo "${LY}g${W}) Clone git"
+echo "${LY}p${W}) Clone website"
+echo "${LY}x${W}) ${LR}Exit${R}"
+
+read CHOICE
+case $CHOICE in
+
+################
+# YT-DLP VIDEO #
+################
+
+v)
+  yt-dlp -n -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" --embed-thumbnail --no-mtime -o "storage/downloads/Termux/Videos/%(title)s.%(ext)s" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#################
+# YT-DLP FORMAT #
+#################
+
+f)
+  yt-dlp -F $target
+  echo "${LG}Select the format:${R}"
+  read FORMAT
+  yt-dlp -n -f $FORMAT --embed-thumbnail --no-mtime -o "storage/downloads/Termux/Videos/%(title)s.%(ext)s" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+################
+# YT-DLP MUSIC #
+################
+
+m)
+  yt-dlp -n -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --convert-thumbnail jpg --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -q:v 3 -vf crop=\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\",scale=\"720:720\"" --exec ffprobe --add-metadata --no-mtime -o "storage/downloads/Termux/Music/%(artist,uploader)s - %(title)s.%(ext)s" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+##########
+# SPOTDL #
+##########
+
+s)
+  spotdl -o "storage/downloads/Termux/Music" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+##############
+# GALLERY-DL #
+##############
+
+k)
+  gallery-dl --netrc --no-mtime -f '{filename}.{extension}' -d "storage/downloads/Termux/GalleryDL" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#####################
+# GALLERY-DL IMAGES #
+#####################
+
+i)
+  gallery-dl --netrc --no-mtime -f '{filename}.{extension}' --filter "extension in ('apng','bmp','dng','gif','heic','jpeg','jpg','png','svg','tiff','webp')" -d "storage/downloads/Termux/GalleryDL" $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+########
+# WGET #
+########
+
+w)
+  wget -P storage/downloads/Termux/Wget $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#########
+# ARIA2 #
+#########
+
+a)
+  aria2c -d storage/downloads/Termux/Aria2 $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#######
+# TDL #
+#######
+
+t)
+  tdl dl -d storage/downloads/Termux/Telegram -u $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#############
+# MEGATOOLS #
+#############
+
+n)
+  megadl --path=storage/downloads/Termux/Mega/ $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#############
+# CLONE GIT #
+#############
+
+g)
+  echo "${LG}Enter repository name:${R}"
+  read REPO
+  git clone $target "storage/downloads/Termux/Git/$REPO"
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+
+#################
+# CLONE WEBSITE #
+#################
+
+p)
+  wget --mirror --page-requisites --html-extension --convert-links -P ~/storage/downloads/Termux/Websites $target
+  if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c black Download finished
+    echo "${LG}Done.${R}"
+    sleep 3s
+  else
+    termux-toast -g top -b white -c red Error
+    echo "${LR}Error.${R}"
+    echo ""
+    echo "${W}Press any key to exit...${R}"
+    read -k 1 -r -s
+  fi
+  ;;
+  
+########
+# EXIT #
+########
+
+x)
+  echo "${LG}Goodbye ;)${R}"
+  sleep 2s
+  ;;
+
+esac

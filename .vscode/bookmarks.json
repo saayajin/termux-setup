@@ -1,0 +1,264 @@
+{
+	"files": [
+		{
+			"path": "setup.sh",
+			"bookmarks": [
+				{
+					"line": 4,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 23,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 44,
+					"column": 0,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "setup1.sh",
+			"bookmarks": [
+				{
+					"line": 4,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 23,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 45,
+					"column": 0,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "home/bin/termux-url-opener",
+			"bookmarks": [
+				{
+					"line": 38,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 57,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 79,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 98,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 117,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 136,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 155,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 174,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 193,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 212,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 231,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 252,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 271,
+					"column": 0,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "home/bin/termux-url-opener1",
+			"bookmarks": [
+				{
+					"line": 32,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 51,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 73,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 92,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 111,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 130,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 149,
+					"column": 0,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "home/.shortcuts/clipboard",
+			"bookmarks": [
+				{
+					"line": 38,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 57,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 79,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 98,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 117,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 136,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 155,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 174,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 193,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 212,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 231,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 252,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 271,
+					"column": 0,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "home/.shortcuts/clipboard1",
+			"bookmarks": [
+				{
+					"line": 32,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 51,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 73,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 92,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 111,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 130,
+					"column": 0,
+					"label": ""
+				},
+				{
+					"line": 149,
+					"column": 0,
+					"label": ""
+				}
+			]
+		}
+	]
+}
