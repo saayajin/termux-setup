@@ -1,0 +1,25 @@
+#!/bin/zsh
+termux-wake-lock
+
+tmux kill-session -t rcscrt
+if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c red Scrt FTP off
+    termux-notification-remove scrt
+  else
+    termux-notification -t "Scrt FTP Server online" --button1 "Turn off" --button1-action ". ~/.shortcuts/tasks/switch-scrt" --ongoing --id scrt
+    termux-toast -g top -b white -c black Scrt FTP on
+    tmux new-session -d -s rcscrt
+    tmux send-keys -t rcscrt 'rclone serve ftp --addr localhost:2122 --user admin --pass 123admin -L Scrt:' C-m
+fi
+
+# current terminal variable
+tty=$(tty | tr -d /dev/)
+
+# check if other terminals are running
+# if not, release wake lock
+ps -h | grep -v "$tty"
+if [ $? -eq 0 ]; then
+    sleep 0s
+  else
+    termux-wake-unlock
+fi

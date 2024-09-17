@@ -1,0 +1,25 @@
+#!/bin/zsh
+termux-wake-lock
+
+tmux kill-session -t acode
+if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c red AcodeX-server off
+    termux-notification-remove acode
+  else
+    termux-notification -t "AcodeX Server online" --button1 "Turn off" --button1-action ". ~/.shortcuts/tasks/switch-acode" --ongoing --id acode
+    termux-toast -g top -b white -c black AcodeX-server on
+    tmux new-session -d -s acode
+    tmux send-keys -t acode 'acodex-server' C-m
+fi
+
+# current terminal variable
+tty=$(tty | tr -d /dev/)
+
+# check if other terminals are running
+# if not, release wake lock
+ps -h | grep -v "$tty"
+if [ $? -eq 0 ]; then
+    sleep 0s
+  else
+    termux-wake-unlock
+fi

@@ -1,0 +1,99 @@
+#!/bin/zsh
+clear
+
+# colors
+LG='\e[1;32m' # light green
+LB='\e[1;34m' # light blue
+W='\e[1;37m'  # white
+R='\e[0m'     # reset color / no color
+
+# name
+clear
+echo "${LG}Insert Server name${R}"
+echo "${W}Press ENTER to cancel${R}"
+read NAME
+if [ $NAME ]; then
+  NAME=${NAME// /-}
+else
+  exit 0
+fi
+
+
+# adress
+clear
+echo "${LG}Insert Server address${R}"
+read ADDRESS
+
+# port
+clear
+echo "${LG}Insert Server port${R}"
+echo "${W}Press ENTER for default port (22)${R}"
+read PORT
+if [ $PORT ]; then
+  PORT1="-p $PORT "
+else
+  PORT="22"
+  PORT1=""
+fi
+
+# user
+clear
+echo "${LG}Insert user${R}"
+read SSHUSER
+
+# password
+clear
+echo "${LG}Insert password${R}"
+echo "${W}Press ENTER to skip${R}"
+read PASS
+if [ $PASS ]; then
+  PASS1="sshpass -p '$PASS' "
+else
+  PASS1=""
+fi
+
+# keyfile
+clear
+echo "${LG}Import ssh Key? (y/n)${R}"
+echo "${W}Note: file will be stored at ~/keys as $NAME-key"
+read CHOICE
+case $CHOICE in
+y)
+  mkdir -p ~/keys
+  termux-storage-get "$HOME/keys/$NAME-key"
+  KEY="$NAME-key"
+  ;;
+n)
+  sleep 0s
+  ;;
+esac
+
+# confirmation
+clear
+sleep 2s
+echo "${LB}Confirm connection details"
+echo "${R}Name: $W$NAME"
+echo "${R}Address: $W$ADDRESS:$PORT"
+echo "${R}User: $W$SSHUSER"
+echo "${R}Password: $W$PASS"
+echo "${R}Key: $W~/keys/$KEY"
+echo "${LB}Press any key to finish.${R}"
+read -k 1 -r -s
+find "$HOME/keys/$NAME-key"
+if [ $? -eq 0 ]; then
+  KEY1="-i ~/keys/$KEY "
+else
+  KEY1=""
+fi
+
+# shortcut
+cat > "$HOME/.shortcuts/ssh-$NAME"<< EOF
+#!/bin/zsh
+clear
+${PASS1}ssh $PORT1$KEY1$SSHUSER@$ADDRESS
+EOF
+cp ~/.shortcuts/icons/ssh-.png ~/.shortcuts/icons/ssh-$NAME.png
+OLD="alias ssh-${NAME}='. ~/.shortcuts/ssh-$NAME'"
+sed -i "s|$OLD|deletemepls|" ~/.zshrc
+sed -i '/deletemepls/d' ~/.zshrc
+echo -e "alias ssh-${NAME}='. ~/.shortcuts/ssh-$NAME'" >> ~/.zshrc

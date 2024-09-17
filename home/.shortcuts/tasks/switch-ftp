@@ -1,0 +1,25 @@
+#!/bin/zsh
+termux-wake-lock
+
+tmux kill-session -t rcftp
+if [ $? -eq 0 ]; then
+    termux-toast -g top -b white -c red FTP off
+    termux-notification-remove ftp
+  else
+    termux-notification -t "FTP Server online" --button1 "Turn off" --button1-action ". ~/.shortcuts/tasks/switch-ftp" --ongoing --id ftp
+    termux-toast -g top -b white -c black FTP on
+    tmux new-session -d -s rcftp
+    tmux send-keys -t rcftp 'rclone serve ftp --addr localhost:2121 --user admin --pass 123admin -L Termux:' C-m
+fi
+
+# current terminal variable
+tty=$(tty | tr -d /dev/)
+
+# check if other terminals are running
+# if not, release wake lock
+ps -h | grep -v "$tty"
+if [ $? -eq 0 ]; then
+    sleep 0s
+  else
+    termux-wake-unlock
+fi
