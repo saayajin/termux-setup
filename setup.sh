@@ -24,7 +24,7 @@ mkdir -p ~/storage/downloads/Termux/{Aria2,downloads,GalleryDL,Git,Mega,Music,Te
 # TERMUX-URL-OPENER + TERMUX-FILE-EDITOR + SHORTCUTS #
 ######################################################
 
-# remove old repo dir
+# recreate old repo dir
 rm -rf ~/.termux-setup
 
 # clone repo
@@ -46,8 +46,9 @@ chmod u+x ~/bin/termux-url-opener
 # OH-MY-ZSH #
 #############
 
-# remove old repo dir
+# recreate old repo dir
 rm -rf ~/.oh-my-zsh
+mkdir ~/.oh-my-zsh
 
 # clone repo
 git clone --single-branch --branch master https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
@@ -93,8 +94,9 @@ mv rewind "$PREFIX/bin/"
 # BY GENERATOR #
 ################
 
-# remove old repo dir
+# recreate old repo dir
 rm -rf ~/.motd
+mkdir ~/.motd
 
 # clone repo
 git clone --single-branch --branch main https://github.com/saayajin/termux-motd.git ~/.motd
@@ -119,10 +121,8 @@ sed -i 's/# allow-external-apps/allow-external-apps/' ~/.termux/termux.propertie
 # BOOKMARKS #
 #############
 
-# remove old dir
+# recreate old dir
 rm -rf ~/bookmarks
-
-# remake dir
 mkdir ~/bookmarks
 
 # add to cdpath
@@ -135,8 +135,9 @@ ln -s ~/storage/shared/Documents/git ~/bookmarks
 # OXIPNG #
 ##########
 
-# remove old repo dir
+# recreate old repo dir
 rm -rf ~/.oxipng
+mkdir ~/.oxipng
 
 # clone repo
 git clone --single-branch --branch master https://github.com/shssoichiro/oxipng.git ~/.oxipng
@@ -159,8 +160,9 @@ rm -rf ~/.oxipng
 # SCRIPTS #
 ###########
 
-# remove old repo dir
+# recreate old repo dir
 rm -rf ~/.scripts
+mkdir ~/.scripts
 
 # clone repo
 git clone --single-branch --branch main https://gist.github.com/a71c14d7c343cd862315e2eeffad5fed.git ~/.scripts
@@ -184,7 +186,7 @@ done
 ##########
 
 # return to home
-cd ~ || exit
+cd ~
 
 # clear pkg cache
 pkg clean
