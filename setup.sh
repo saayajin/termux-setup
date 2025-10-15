@@ -26,6 +26,7 @@ mkdir -p ~/storage/downloads/Termux/{Aria2,downloads,GalleryDL,Git,Mega,Music,Te
 
 # recreate old repo dir
 rm -rf ~/.termux-setup
+mkdir ~/.termux-setup
 
 # clone repo
 git clone --single-branch --branch notmain https://github.com/saayajin/termux-setup.git ~/.termux-setup
