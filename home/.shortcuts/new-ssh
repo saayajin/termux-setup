@@ -2,33 +2,43 @@
 # shellcheck shell=bash
 
 # colors
+LR='\e[1;31m' # light red
 LG='\e[1;32m' # light green
 LY='\e[1;33m' # light yellow
 LB='\e[1;34m' # light blue
 R='\e[0m'     # no color
 
+# error
+fail() {
+  echo "${LR}$1${R}"
+  sleep 2s
+  exit 1
+}
+
 # name
 echo "${LG}Insert Server name"
 echo "${R}Press ENTER to cancel"
-read NAME
-if [ $NAME ]; then
-  # remove whitespace
-  NAME=${NAME// /-}
-else
-  exit 0
-fi
+read -r NAME
+[ -n "$NAME" ] || exit 0
+
+# remove whitespace
+NAME=${NAME// /-}
+[[ "$NAME" =~ ^[A-Za-z0-9_-]+$ ]] || fail "Invalid name (letters, numbers, - and _ only)."
+[ -e "$HOME/.shortcuts/ssh-$NAME" ] && fail "ssh-$NAME already exists. Delete it first."
 
 # address
 clear
 echo "${LG}Insert Server address${R}"
-read ADDRESS
+read -r ADDRESS
+[ -n "$ADDRESS" ] || fail "Address is required."
 
 # port
 clear
 echo "${LG}Insert Server port"
 echo "${R}Press ENTER for default port (22)"
-read PORT
-if [ $PORT ]; then
+read -r PORT
+if [ -n "$PORT" ]; then
+  [[ "$PORT" =~ ^[0-9]{1,5}$ ]] && (( PORT >= 1 && PORT <= 65535 )) || fail "Invalid port."
   PORT1="-p $PORT "
 else
   PORT="22"
@@ -38,15 +48,16 @@ fi
 # user
 clear
 echo "${LG}Insert user${R}"
-read SSHUSER
+read -r SSHUSER
+[ -n "$SSHUSER" ] || fail "User is required."
 
 # password
 clear
 echo "${LG}Insert password"
 echo "${R}Press ENTER to skip"
-read PASS
-if [ $PASS ]; then
-  PASS1="sshpass -p '$PASS' "
+read -rs PASS
+if [ -n "$PASS" ]; then
+  PASS1="sshpass -p ${(q)PASS} "
 else
   PASS1=""
 fi
@@ -55,15 +66,20 @@ fi
 clear
 echo "${LG}Import ssh Key? ${R}(${LY}y${R}/${LY}n${R})"
 echo "${R}Note: file will be stored at ~/keys as $NAME-key"
-read CHOICE
+read -r CHOICE
 case $CHOICE in
-y)
-  mkdir -p ~/keys
+y|Y)
+  mkdir -p "$HOME/keys"
+  rm -f "$HOME/keys/$NAME-key"
   termux-storage-get "$HOME/keys/$NAME-key"
-  KEY="$NAME-key"
-  ;;
-n)
-  sleep 0s
+  echo "${LG}Waiting for file... press any key to skip${R}"
+  for i in {1..60}; do [ -s "$HOME/keys/$NAME-key" ] && break; read -t 1 -k 1 -s && break; done
+  if [ -s "$HOME/keys/$NAME-key" ]; then
+    chmod 600 "$HOME/keys/$NAME-key"
+    KEY="$NAME-key"
+  else
+    rm -f "$HOME/keys/$NAME-key"
+  fi
   ;;
 esac
 
@@ -75,30 +91,42 @@ echo ""
 echo "${R}Name: $NAME"
 echo "Address: $ADDRESS:$PORT"
 echo "User: $SSHUSER"
-echo "Password: $PASS"
-echo "Key: $KEY"
+echo "Password: ${PASS:+(set)}"
+echo "Key: ${KEY:-(none)}"
 echo ""
-echo "Press any key to finish."
-read -k 1 -r -s
-find "$HOME/keys/$NAME-key"
-if [ $? -eq 0 ]; then
-  KEY1="-i ~/keys/$KEY "
-else
-  KEY1=""
+echo "Create connection? (${LY}y${R}/${LY}n${R})"
+read -k 1 -r -s CONFIRM
+echo ""
+if [[ "$CONFIRM" != [yY] ]]; then
+  [ -n "$KEY" ] && rm -f "$HOME/keys/$KEY"
+  echo "${LB}Canceled.${R}"
+  sleep 2s
+  exit 0
 fi
+
+# build ssh command parts
+KEY1=""
+[ -n "$KEY" ] && KEY1="-i $HOME/keys/$KEY "
+DEST="${(q)SSHUSER}@${(q)ADDRESS}"
 
 # create shortcut
 cat > "$HOME/.shortcuts/ssh-$NAME"<< EOF
 #!/bin/zsh
 clear
-${PASS1}ssh $PORT1$KEY1$SSHUSER@$ADDRESS
+${PASS1}ssh $PORT1$KEY1$DEST
 EOF
 
+# make executable
+chmod 700 "$HOME/.shortcuts/ssh-$NAME"
+
 # copy shortcut image
-cp ~/.shortcuts/icons/ssh-.png ~/.shortcuts/icons/ssh-$NAME.png
+cp "$HOME/.shortcuts/icons/ssh-.png" "$HOME/.shortcuts/icons/ssh-$NAME.png"
 
 # delete old alias
-sed -i "/^alias ssh-${NAME}=/d" ~/.zshrc
+sed -i "/^alias ssh-${NAME}=/d" "$HOME/.zshrc"
 
 # create alias
-echo -e "alias ssh-${NAME}='. ~/.shortcuts/ssh-$NAME'" >> ~/.zshrc
+echo -e "alias ssh-${NAME}='. $HOME/.shortcuts/ssh-$NAME'" >> "$HOME/.zshrc"
+
+echo "${LB}ssh-$NAME created.${R}"
+sleep 2s

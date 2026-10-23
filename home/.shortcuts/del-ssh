@@ -2,24 +2,32 @@
 # shellcheck shell=bash
 
 # colors
+LR='\e[1;31m' # light red
 LG='\e[1;32m' # light green
 LB='\e[1;34m' # light blue
 R='\e[0m'     # no color
 
 # delete
-LIST=$(find ~/.shortcuts/ -maxdepth 1 -type f -name "ssh-*" -printf "%f\n")
+LIST=$(find "$HOME/.shortcuts/" -maxdepth 1 -type f -name "ssh-*" -printf "%f\n")
 echo "${LG}Insert connection name to delete"
 echo "${R}Press ENTER to cancel"
 echo ""
 echo "${R}List:"
 echo "$LIST"
 echo ""
-read DELETE
-if [ $DELETE ]; then
-  rm -f ~/.shortcuts/$DELETE
-  rm -f ~/.shortcuts/icons/${DELETE}.png
-  rm -f ~/keys/${DELETE}-key
-  sed -i "/^alias ${DELETE}=/d" ~/.zshrc
+read -r DELETE
+if [ -n "$DELETE" ]; then
+  # accept only existing ssh-* shortcuts (no paths)
+  if [[ "$DELETE" != ssh-* || "$DELETE" == */* || ! -f "$HOME/.shortcuts/$DELETE" ]]; then
+    echo "${LR}Invalid name.${R}"
+    sleep 2s
+    exit 1
+  fi
+  NAME=${DELETE#ssh-}
+  rm -f "$HOME/.shortcuts/$DELETE"
+  rm -f "$HOME/.shortcuts/icons/${DELETE}.png"
+  rm -f "$HOME/keys/${NAME}-key"
+  sed -i "/^alias ${DELETE}=/d" "$HOME/.zshrc"
   echo "${LB}$DELETE deleted.${R}"
   sleep 2s
 else
