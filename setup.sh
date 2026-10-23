@@ -11,7 +11,7 @@ termux-setup-storage
 pkg update -y
 
 # install packages
-pkg in -y aria2 exiftool ffmpeg figlet ghostscript git imagemagick openssh python rclone rust shellcheck sshpass sqlite termux-api termux-services tmux vim wget zsh
+pkg in -y aria2 exiftool ffmpeg figlet ghostscript git imagemagick openssh python qalc rclone rust shellcheck sshpass sqlite termux-api termux-services tmux vim wget zsh
 
 # install pip packages
 pip install csvkit gallery_dl mutagen yt-dlp
