@@ -1,11 +1,19 @@
 #!/bin/bash
 
+# variables
+termuxsetupr="https://github.com/saayajin/termux-setup.git"
+termuxmotdr="https://github.com/saayajin/termux-motd.git"
+scriptsr="https://github.com/saayajin/scripts.git"
+
 #################
 # INITIAL SETUP #
 #################
 
-# setup storage
-termux-setup-storage
+# check storage permission
+[ -d "$HOME/storage/downloads" ] || {
+  echo "Run termux-setup-storage first."
+  exit 1
+}
 
 # update
 pkg update -y
@@ -17,47 +25,47 @@ pkg in -y aria2 exiftool ffmpeg figlet ghostscript git imagemagick openssh pytho
 pip install csvkit gallery_dl mutagen yt-dlp
 
 # create dirs
-mkdir -p ~/storage/downloads/Termux/{Aria2,downloads,GalleryDL,Git,Music,Videos,Websites,Wget}
+mkdir -p "$HOME/storage/downloads/Termux"/{Aria2,downloads,GalleryDL,Git,Music,Videos,Websites,Wget}
 
 ######################################################
 # TERMUX-URL-OPENER + TERMUX-FILE-EDITOR + SHORTCUTS #
 ######################################################
 
 # remove old repo dir
-rm -rf ~/.termux-setup
+rm -rf "$HOME/.termux-setup"
 
 # clone repo
-git clone --single-branch --branch main https://github.com/saayajin/termux-setup.git ~/.termux-setup
+git clone --single-branch --branch main "$termuxsetupr" "$HOME/.termux-setup"
 
 # copy home dir
-cp -rf ~/.termux-setup/home /data/data/com.termux/files
+cp -rf "$HOME/.termux-setup/home" "/data/data/com.termux/files"
 
 # symlink
-ln -s ~/storage/downloads/Termux/downloads ~/
+ln -sfn "$HOME/storage/downloads/Termux/downloads" "$HOME/downloads"
 
 # make executable
-chmod u+x ~/.shortcuts/*
-chmod u+x ~/bin/termux-file-editor
-chmod u+x ~/bin/termux-url-opener
+chmod u+x "$HOME"/.shortcuts/*
+chmod u+x "$HOME/bin/termux-file-editor"
+chmod u+x "$HOME/bin/termux-url-opener"
 
 #############
 # OH-MY-ZSH #
 #############
 
 # remove old repo dir
-rm -rf ~/.oh-my-zsh
+rm -rf "$HOME/.oh-my-zsh"
 
 # clone repo
-git clone --single-branch --branch master https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+git clone --single-branch --branch master https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 
 # copy template
-cp -f ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+cp -f "$HOME/.oh-my-zsh/templates/zshrc.zsh-template" "$HOME/.zshrc"
 
 # change theme
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' "$HOME/.zshrc"
 
 # add prompt context
-echo -e 'prompt_context() {\n  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then\n    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"\n  fi\n}\n' >> ~/.zshrc
+echo -e 'prompt_context() {\n  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then\n    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"\n  fi\n}\n' >> "$HOME/.zshrc"
 
 # change shell
 chsh -s zsh
@@ -67,7 +75,7 @@ chsh -s zsh
 #########
 
 # set update alias
-echo -e 'alias updateall="pkg update && pkg upgrade -y && pkg clean && pip install --upgrade csvkit gallery-dl mutagen yt-dlp"\n' >> ~/.zshrc
+echo -e 'alias updateall="pkg update && pkg upgrade -y && pkg clean && pip install --upgrade csvkit gallery-dl mutagen yt-dlp"\n' >> "$HOME/.zshrc"
 
 ##########
 # REWIND #
@@ -90,85 +98,85 @@ mv rewind "$PREFIX/bin/"
 ###############
 
 # remove old repo dir
-rm -rf ~/.motd
+rm -rf "$HOME/.motd"
 
 # clone repo
-git clone --single-branch --branch main https://github.com/saayajin/termux-motd.git ~/.motd
+git clone --single-branch --branch main "$termuxmotdr" "$HOME/.motd"
 
 # make executable
-chmod +x ~/.motd/init.sh
+chmod +x "$HOME/.motd/init.sh"
 
 # run init.sh on login
-echo "$HOME/.motd/init.sh" >> ~/.zprofile
+echo "$HOME/.motd/init.sh" > "$HOME/.zprofile"
 
 # clear default motd
-echo "" > /data/data/com.termux/files/usr/etc/motd
+echo "" > "/data/data/com.termux/files/usr/etc/motd"
 
 ##################
 # VIM SHELLCHECK #
 ##################
 
 # remove old repo dir
-rm -rf ~/.vim/pack/shellcheck
+rm -rf "$HOME/.vim/pack/shellcheck"
 
 # clone repo
-git clone --single-branch --branch master https://github.com/itspriddle/vim-shellcheck.git ~/.vim/pack/shellcheck/start/vim-shellcheck
+git clone --single-branch --branch master "https://github.com/itspriddle/vim-shellcheck.git" "$HOME/.vim/pack/shellcheck/start/vim-shellcheck"
 
 # set helptag
-vim -u NONE -c "helptags ~/.vim/pack/shellcheck/start/vim-shellcheck/doc" -c q
+vim -u NONE -c "helptags $HOME/.vim/pack/shellcheck/start/vim-shellcheck/doc" -c q
 
 #############
 # BOOKMARKS #
 #############
 
 # remove old dir
-rm -rf ~/bookmarks
+rm -rf "$HOME/bookmarks"
 
 # remake dir
-mkdir ~/bookmarks
+mkdir "$HOME/bookmarks"
 
 # add to cdpath
-echo -e 'export CDPATH=~/bookmarks\n' >> ~/.zshrc
+echo -e 'export CDPATH=$HOME/bookmarks\n' >> "$HOME/.zshrc"
 
 # make symlink
-ln -s ~/storage/shared/Documents/git ~/bookmarks
+ln -s "$HOME/storage/shared/Documents/git" "$HOME/bookmarks"
 
 ##########
 # OXIPNG #
 ##########
 
 # remove old repo dir
-rm -rf ~/.oxipng
+rm -rf "$HOME/.oxipng"
 
 # clone repo
-git clone --single-branch --branch master https://github.com/shssoichiro/oxipng.git ~/.oxipng
+git clone --single-branch --branch master "https://github.com/shssoichiro/oxipng.git" "$HOME/.oxipng"
 
 # change working dir
-cd ~/.oxipng || exit 1
+cd "$HOME/.oxipng" || exit 1
 
 # build
 cargo build --release
 
 # copy to bin
-cp -f ~/.oxipng/target/release/oxipng $PREFIX/bin
+cp -f "$HOME/.oxipng/target/release/oxipng" "$PREFIX/bin"
 
 # remove leftovers
 pkg un -y rust
-rm -rf ~/.cargo
-rm -rf ~/.oxipng
+rm -rf "$HOME/.cargo"
+rm -rf "$HOME/.oxipng"
 
 ###########
 # SCRIPTS #
 ###########
 
 # remove old repo dir
-rm -rf ~/.scripts
+rm -rf "$HOME/.scripts"
 
 # clone repo
-git clone --single-branch --branch main https://github.com/saayajin/scripts.git ~/.scripts
+git clone --single-branch --branch main "$scriptsr" "$HOME/.scripts"
 
 # change working dir
-cd ~/.scripts/termux || exit 1
+cd "$HOME/.scripts/termux" || exit 1
 
 # make executable
 chmod u+x *
@@ -178,29 +186,29 @@ BEGIN_MARKER="# === SCRIPTS ALIASES - BEGIN ==="
 END_MARKER="# === SCRIPTS ALIASES - END ==="
 
 # delete old block
-sed -i "/$BEGIN_MARKER/,/$END_MARKER/d" ~/.zshrc
+sed -i "/$BEGIN_MARKER/,/$END_MARKER/d" "$HOME/.zshrc"
 
 # generate new block beginning
-echo "" >> ~/.zshrc
-echo "$BEGIN_MARKER" >> ~/.zshrc
-echo "" >> ~/.zshrc
+echo "" >> "$HOME/.zshrc"
+echo "$BEGIN_MARKER" >> "$HOME/.zshrc"
+echo "" >> "$HOME/.zshrc"
 
 # make alias for each script
 for i in *.sh; do
-  echo -e "alias ${i%.sh}='. ~/.scripts/termux/$i'" >> ~/.zshrc
+  echo -e "alias ${i%.sh}='. $HOME/.scripts/termux/$i'" >> "$HOME/.zshrc"
 done
 
 # close block
-echo "" >> ~/.zshrc
-echo "$END_MARKER" >> "$ZSHRC"
-echo "" >> ~/.zshrc
+echo "" >> "$HOME/.zshrc"
+echo "$END_MARKER" >> "$HOME/.zshrc"
+echo "" >> "$HOME/.zshrc"
 
 ##########
 # FINISH #
 ##########
 
 # return to home
-cd ~ || exit 1
+cd $HOME || exit 1
 
 # clear pkg cache
 pkg clean

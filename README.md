@@ -2,7 +2,13 @@
 
 ## Install / Reinstall
 
-Run main setup script:
+1. Grant storage access:
+
+```bash
+termux-setup-storage
+```
+
+2. Run main setup script:
 
 ```bash
 bash <(curl https://raw.githubusercontent.com/saayajin/termux-setup/main/setup.sh)
