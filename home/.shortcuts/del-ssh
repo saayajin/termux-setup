@@ -1,0 +1,28 @@
+#!/bin/zsh
+# shellcheck shell=bash
+
+# colors
+LG='\e[1;32m' # light green
+LB='\e[1;34m' # light blue
+R='\e[0m'     # no color
+
+# delete
+LIST=$(find ~/.shortcuts/ -maxdepth 1 -type f -name "ssh-*" -printf "%f\n")
+echo "${LG}Insert connection name to delete"
+echo "${R}Press ENTER to cancel"
+echo ""
+echo "${R}List:"
+echo "$LIST"
+echo ""
+read DELETE
+if [ $DELETE ]; then
+  rm -f ~/.shortcuts/$DELETE
+  rm -f ~/.shortcuts/icons/${DELETE}.png
+  rm -f ~/keys/${DELETE}-key
+  sed -i "/^alias ${DELETE}=/d" ~/.zshrc
+  echo "${LB}$DELETE deleted.${R}"
+  sleep 2s
+else
+  echo "${LB}Canceled."
+  sleep 2s
+fi
