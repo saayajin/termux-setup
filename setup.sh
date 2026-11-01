@@ -19,13 +19,13 @@ scriptsr="https://github.com/saayajin/scripts.git"
 pkg update -y
 
 # install packages
-pkg in -y aria2 exiftool ffmpeg figlet ghostscript git helix imagemagick openssh python rclone rust shellcheck sshpass sqlite termux-api termux-services tmux vim wget zsh
+pkg in -y aria2 exiftool ffmpeg figlet ghostscript git helix imagemagick megatools openssh python rclone rust shellcheck sshpass sqlite termux-api termux-services tmux vim wget zsh
 
 # install pip packages
 pip install csvkit gallery_dl mutagen yt-dlp
 
 # create dirs
-mkdir -p "$HOME/storage/downloads/Termux"/{Aria2,downloads,GalleryDL,Git,Music,Videos,Websites,Wget}
+mkdir -p "$HOME/storage/downloads/Termux"/{Aria2,downloads,GalleryDL,Git,Mega,Music,Videos,Websites,Wget}
 
 ######################################################
 # TERMUX-URL-OPENER + TERMUX-FILE-EDITOR + SHORTCUTS #
