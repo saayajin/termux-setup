@@ -1,0 +1,22 @@
+theme = "earl_grey"
+
+[editor]
+cursorline = true
+trim-final-newlines = true
+trim-trailing-whitespace = true
+
+[editor.file-picker]
+hidden = false
+
+[editor.soft-wrap]
+enable = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+
+[editor.indent-guides]
+render = true
+
+[editor.search]
+smart-case = false

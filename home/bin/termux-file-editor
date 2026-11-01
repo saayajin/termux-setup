@@ -1,4 +1,4 @@
 #!/bin/zsh
 # shellcheck shell=bash
 
-vi $1
+hx $1
