@@ -56,7 +56,7 @@ case $CHOICE in
 ################
 
 v)
-  yt-dlp ${ck[@]} -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" --no-mtime -o "$dl/Videos/%(title)s.%(ext)s" "$target"
+  yt-dlp "${ck[@]}" -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" --no-mtime -o "$dl/Videos/%(title)s.%(ext)s" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -78,7 +78,7 @@ f)
   yt-dlp -F "$target"
   echo "${LG}Select the format:${R}"
   read FORMAT
-  yt-dlp ${ck[@]} -f "$FORMAT" --no-mtime -o "$dl/Videos/%(title)s.%(ext)s" "$target"
+  yt-dlp "${ck[@]}" -f "$FORMAT" --no-mtime -o "$dl/Videos/%(title)s.%(ext)s" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -97,7 +97,7 @@ f)
 ################
 
 m)
-  yt-dlp ${ck[@]} -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --convert-thumbnail jpg --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -q:v 2 -vf \"crop=min(iw\\,ih):min(iw\\,ih),scale=720:720\"" --exec ffprobe --embed-metadata --no-mtime -o "$dl/Music/%(artist,uploader)s - %(title)s.%(ext)s" "$target"
+  yt-dlp "${ck[@]}" -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --convert-thumbnail jpg --ppa "EmbedThumbnail+ffmpeg_o:-c:v mjpeg -q:v 2 -vf \"crop=min(iw\\,ih):min(iw\\,ih),scale=720:720\"" --exec ffprobe --embed-metadata --no-mtime -o "$dl/Music/%(artist,uploader)s - %(title)s.%(ext)s" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -116,7 +116,7 @@ m)
 ##############
 
 k)
-  gallery-dl ${ck[@]} --no-mtime -f '{filename}.{extension}' -d "$dl/GalleryDL" "$target"
+  gallery-dl "${ck[@]}" --no-mtime -f '{filename}.{extension}' -d "$dl/GalleryDL" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -135,7 +135,7 @@ k)
 #####################
 
 i)
-  gallery-dl ${ck[@]} --no-mtime -f '{filename}.{extension}' --filter "extension in ('apng','bmp','dng','gif','heic','jpeg','jpg','png','svg','tiff','webp')" -d "$dl/GalleryDL" "$target"
+  gallery-dl "${ck[@]}" --no-mtime -f '{filename}.{extension}' --filter "extension in ('apng','bmp','dng','gif','heic','jpeg','jpg','png','svg','tiff','webp')" -d "$dl/GalleryDL" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -154,7 +154,7 @@ i)
 ########
 
 w)
-  wget ${wck[@]} -P "$dl/Wget" "$target"
+  wget "${wck[@]}" -P "$dl/Wget" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -173,7 +173,7 @@ w)
 #########
 
 a)
-  aria2c ${ack[@]} -d "$dl/Aria2" "$target"
+  aria2c "${ack[@]}" -d "$dl/Aria2" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
@@ -232,7 +232,7 @@ g)
 #################
 
 s)
-  wget ${wck[@]} --mirror --page-requisites --html-extension --convert-links -P "$dl/Websites" "$target"
+  wget "${wck[@]}" --mirror --page-requisites --html-extension --convert-links -P "$dl/Websites" "$target"
   if [ $? -eq 0 ]; then
     termux-toast -g top -b white -c black Download finished
     echo "${LB}Done.${R}"
