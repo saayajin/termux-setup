@@ -75,7 +75,7 @@ chsh -s zsh
 #########
 
 # set update alias
-echo -e 'alias updateall="pkg update && pkg upgrade -y && pkg clean && pip install --upgrade csvkit gallery-dl mutagen yt-dlp"\n' >> "$HOME/.zshrc"
+echo -e 'alias upgradeall="pkg upgrade -y && pkg clean && pip install --upgrade csvkit gallery-dl mutagen yt-dlp"\n' >> "$HOME/.zshrc"
 
 ##############
 # CHPWD HOOK #
@@ -83,11 +83,18 @@ echo -e 'alias updateall="pkg update && pkg upgrade -y && pkg clean && pip insta
 
 # set chpwd hook
 cat > "$HOME/.zshrc"<< EOF
-
 chpwd() {
   eza -aF --group-directories-first
 }
+
 EOF
+
+##############
+# ENABLE ZMV #
+##############
+
+# set chpwd hook
+echo -e 'autoload zmv\n' >> "$HOME/.zshrc"
 
 ##########
 # REWIND #
@@ -193,17 +200,11 @@ cd "$HOME/.scripts/termux" || exit 1
 # make executable
 chmod u+x *
 
-# scripts aliases block variables
-BEGIN_MARKER="# === SCRIPTS ALIASES - BEGIN ==="
-END_MARKER="# === SCRIPTS ALIASES - END ==="
-
-# delete old block
-sed -i "/$BEGIN_MARKER/,/$END_MARKER/d" "$HOME/.zshrc"
-
 # generate new block beginning
-echo "" >> "$HOME/.zshrc"
-echo "$BEGIN_MARKER" >> "$HOME/.zshrc"
-echo "" >> "$HOME/.zshrc"
+cat > "$HOME/.zshrc"<< EOF
+# === SCRIPTS ALIASES - BEGIN ===
+
+EOF
 
 # make alias for each script
 for i in *.sh; do
@@ -211,16 +212,18 @@ for i in *.sh; do
 done
 
 # close block
-echo "" >> "$HOME/.zshrc"
-echo "$END_MARKER" >> "$HOME/.zshrc"
-echo "" >> "$HOME/.zshrc"
+cat > "$HOME/.zshrc"<< EOF
+
+# === SCRIPTS ALIASES - END ===
+
+EOF
 
 ##########
 # FINISH #
 ##########
 
 # return to home
-cd $HOME || exit 1
+cd "$HOME" || exit 1
 
 # clear pkg cache
 pkg clean
