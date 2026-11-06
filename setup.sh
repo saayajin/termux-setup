@@ -19,7 +19,7 @@ scriptsr="https://github.com/saayajin/scripts.git"
 pkg update -y
 
 # install packages
-pkg in -y aria2 exiftool ffmpeg figlet ghostscript git helix imagemagick mediainfo megatools openssh python rclone rust shellcheck sshpass sqlite tealdeer termux-api termux-services tmux vim wget zsh
+pkg in -y aria2 exiftool eza ffmpeg figlet ghostscript git helix imagemagick mediainfo megatools openssh python rclone rust shellcheck sshpass sqlite tealdeer termux-api termux-services tmux vim wget zsh
 
 # install pip packages
 pip install csvkit gallery_dl mutagen yt-dlp
@@ -76,6 +76,18 @@ chsh -s zsh
 
 # set update alias
 echo -e 'alias updateall="pkg update && pkg upgrade -y && pkg clean && pip install --upgrade csvkit gallery-dl mutagen yt-dlp"\n' >> "$HOME/.zshrc"
+
+##############
+# CHPWD HOOK #
+##############
+
+# set chpwd hook
+cat > "$HOME/.zshrc"<< EOF
+
+chpwd() {
+  eza -aF --group-directories-first
+}
+EOF
 
 ##########
 # REWIND #
