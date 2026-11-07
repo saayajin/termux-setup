@@ -82,7 +82,7 @@ echo -e 'alias upgradeall="pkg upgrade -y && pkg clean && pip install --upgrade 
 ##############
 
 # set chpwd hook
-cat > "$HOME/.zshrc"<< EOF
+cat >> "$HOME/.zshrc"<< EOF
 chpwd() {
   eza -aF --group-directories-first
 }
@@ -201,7 +201,7 @@ cd "$HOME/.scripts/termux" || exit 1
 chmod u+x *
 
 # generate new block beginning
-cat > "$HOME/.zshrc"<< EOF
+cat >> "$HOME/.zshrc"<< EOF
 # === SCRIPTS ALIASES - BEGIN ===
 
 EOF
@@ -212,7 +212,7 @@ for i in *.sh; do
 done
 
 # close block
-cat > "$HOME/.zshrc"<< EOF
+cat >> "$HOME/.zshrc"<< EOF
 
 # === SCRIPTS ALIASES - END ===
 
